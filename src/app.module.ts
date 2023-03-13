@@ -1,3 +1,4 @@
+import { AccountModule } from './account/account.module';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
@@ -20,6 +21,7 @@ import * as Joi from 'joi';
     }),
     DatabaseModule,
     UserModule,
+    AccountModule,
   ],
   controllers: [AppController],
   providers: [AppService],
