@@ -19,7 +19,7 @@ export class AccountController {
     return this.accountService.getAccounts(rut);
   }
 
-  @Post('create-account')
+  @Post()
   create(@Body() payload: CreateAccountDto) {
     return this.accountService.create(payload);
   }

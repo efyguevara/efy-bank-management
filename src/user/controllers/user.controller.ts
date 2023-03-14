@@ -20,7 +20,7 @@ export class UserController {
   getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
-  @Post('create-user')
+  @Post()
   create(@Body() payload: CreateUserDto) {
     return this.userService.create(payload);
   }
@@ -28,7 +28,7 @@ export class UserController {
   getUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUser(id);
   }
-  @Put('edit-user/:id')
+  @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateUserDto,
