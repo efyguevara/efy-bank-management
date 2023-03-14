@@ -15,9 +15,15 @@ export class User {
   @Column({ type: 'varchar', length: 12, unique: true })
   rut: string;
 
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  email: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @OneToMany(() => Account, (accounts) => accounts.user)
   accounts: Account[];
+
+  @Column({ type: 'boolean', default: false })
+  deleted: boolean;
 }

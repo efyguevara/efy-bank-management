@@ -12,6 +12,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   readonly rut: string;
+
+  @IsString()
+  readonly email: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}

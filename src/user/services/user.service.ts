@@ -11,16 +11,18 @@ export class UserService {
   getAllUsers(): Promise<User[]> {
     return this.userRepo
       .createQueryBuilder('user')
+      .orderBy({ 'user.id': 'ASC' })
       .leftJoinAndSelect('user.accounts', 'accounts')
-      .where('accounts.deleted = false OR accounts.id is null')
+      .where('(accounts.deleted = false OR accounts.id is null)')
+      .andWhere('user.deleted = false')
       .getMany();
   }
   async getUser(id: number) {
     const user = await this.userRepo
       .createQueryBuilder('user')
-      .innerJoinAndSelect('user.accounts', 'accounts')
+      .leftJoinAndSelect('user.accounts', 'accounts')
       .where('user.id = :id', { id: id })
-      .andWhere('accounts.deleted = false OR accounts.id is null')
+      .andWhere('(accounts.deleted = false OR accounts.id is null)')
       .getOne();
     if (!user) {
       throw new NotFoundException(`Usuario con ID #${id} no encontrado.`);
@@ -55,6 +57,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException(`Usuario con ID #${id} no encontrado.`);
     }
-    return this.userRepo.delete(id);
+    user.deleted = true;
+    return this.userRepo.save(user);
   }
 }
