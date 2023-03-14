@@ -23,4 +23,7 @@ export class Account {
 
   @Column({ type: 'boolean', default: false })
   deleted: boolean;
+
+  @Column({ type: 'varchar', length: 255, default: 0 })
+  balance: number;
 }
