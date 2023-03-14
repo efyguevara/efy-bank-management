@@ -1,5 +1,12 @@
+import { Transactions } from 'src/transactions/entities/transactions.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'accounts' })
 export class Account {
@@ -15,6 +22,9 @@ export class Account {
   @Column({ type: 'varchar', length: 255 })
   bank: string;
 
+  @Column({ type: 'number' })
+  userId: number;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
@@ -26,4 +36,13 @@ export class Account {
 
   @Column({ type: 'varchar', length: 255, default: 0 })
   balance: number;
+
+  @OneToMany(
+    () => Transactions,
+    (transactions) => transactions.destinationAccount,
+  )
+  inboundTransactions: Transactions[];
+
+  @OneToMany(() => Transactions, (transactions) => transactions.originAccount)
+  outboundTransactions: Transactions[];
 }

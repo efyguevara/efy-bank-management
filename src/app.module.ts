@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import config from '../config';
 import * as Joi from 'joi';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import * as Joi from 'joi';
     DatabaseModule,
     UserModule,
     AccountModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

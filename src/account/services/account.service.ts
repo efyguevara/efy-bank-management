@@ -14,9 +14,18 @@ export class AccountService {
 
   async getAccounts(rut: string) {
     const user = await this.userService.getUserByIdentification(rut);
-    const accounts = user.accounts.filter(
-      (account) => account.deleted !== true,
-    );
+    const accounts = this.accountRepo
+      .createQueryBuilder('accounts')
+      .leftJoinAndSelect('accounts.inboundTransactions', 'inboundTransactions')
+      .leftJoinAndSelect(
+        'accounts.outboundTransactions',
+        'outboundTransactions',
+      )
+      .where('accounts.deleted = false')
+      .andWhere('accounts.userId = :userId', { userId: user.id })
+      .orderBy({ 'accounts.id': 'ASC' })
+      .getMany();
+
     if (!accounts) {
       throw new NotFoundException(`El usuario no tiene ninguna cuenta.`);
     }
